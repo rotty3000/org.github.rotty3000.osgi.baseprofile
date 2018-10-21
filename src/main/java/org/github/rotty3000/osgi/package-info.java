@@ -13,6 +13,7 @@
  */
 
 @Beans
+@RequireConfigurator("")
 @Requirement(namespace = CDI_EXTENSION_PROPERTY, name = "JavaJSONB")
 //@Requirement(namespace = CDI_EXTENSION_PROPERTY, name = "aries.cdi.http")
 package org.github.rotty3000.osgi;
@@ -21,3 +22,4 @@ import static org.osgi.service.cdi.CDIConstants.CDI_EXTENSION_PROPERTY;
 
 import org.osgi.annotation.bundle.Requirement;
 import org.osgi.service.cdi.annotations.Beans;
+import org.osgi.service.configurator.annotations.RequireConfigurator;

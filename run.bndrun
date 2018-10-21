@@ -34,6 +34,7 @@
 
 -runproperties: \
 	my.string.property=this is a config property from system,\
+	configurator.initial=file:${.}/config.json,\
 	eclipse.log.enabled=false,\
 	logback.configurationFile=file:${.}/logback.xml,\
 	org.jboss.logging.provider=slf4j,\
@@ -48,6 +49,7 @@
 	org.apache.aries.jax.rs.whiteboard;version='[1.0.1,1.0.2)',\
 	org.apache.aries.spifly.dynamic.framework.extension;version='[1.0.14,1.0.15)',\
 	org.apache.felix.configadmin;version='[1.9.10,1.9.11)',\
+	org.apache.felix.configurator;version='[1.0.6,1.0.7)',\
 	org.apache.felix.gogo.command;version='[1.0.2,1.0.3)',\
 	org.apache.felix.gogo.runtime;version='[1.1.0,1.1.1)',\
 	org.apache.felix.gogo.shell;version='[1.1.0,1.1.1)',\

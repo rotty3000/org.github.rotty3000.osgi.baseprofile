@@ -1,0 +1,12 @@
+{
+	":configurator:resource-version" : 1,
+	":configurator:symbolic-name" : "configurator.initial",
+	":configurator:version" : "1"
+
+	/*
+	,
+	"osgi.cdi.org.github.rotty3000.osgi.microprofile": {
+		"my.string.property": "the value is set from initial configuration"
+	}
+	*/
+}
