@@ -12,19 +12,12 @@
  * limitations under the License.
  */
 
-package org.github.rotty3000.osgi.microprofile.model;
+@Beans
+@Requirement(namespace = CDI_EXTENSION_PROPERTY, name = "JavaJSONB")
+//@Requirement(namespace = CDI_EXTENSION_PROPERTY, name = "aries.cdi.http")
+package org.github.rotty3000.osgi;
 
-import java.time.LocalDate;
+import static org.osgi.service.cdi.CDIConstants.CDI_EXTENSION_PROPERTY;
 
-import org.apache.johnzon.mapper.JohnzonIgnore;
-
-public class JohnzonModel {
-	@JohnzonIgnore
-	public LocalDate date;
-
-	public JohnzonModel(LocalDate date) {
-		this.date = date;
-	}
-
-	public String value;
-}
+import org.osgi.annotation.bundle.Requirement;
+import org.osgi.service.cdi.annotations.Beans;

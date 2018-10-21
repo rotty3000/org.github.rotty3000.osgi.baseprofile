@@ -12,11 +12,17 @@
  * limitations under the License.
  */
 
-package org.github.rotty3000.osgi.microprofile.model;
+package org.github.rotty3000.osgi.model;
+
+import java.time.LocalDate;
 
 import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 
 public class JSONBModel {
+	@JsonbTransient
+	public LocalDate date;
+
 	@JsonbProperty("my.string.property")
 	public String value;
 }

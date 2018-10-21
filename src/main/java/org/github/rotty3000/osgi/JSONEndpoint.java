@@ -12,14 +12,15 @@
  * limitations under the License.
  */
 
-package org.github.rotty3000.osgi.microprofile;
+package org.github.rotty3000.osgi;
 
 import java.time.LocalDate;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,9 +31,10 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.aries.cdi.extra.propertytypes.JSONRequired;
 import org.apache.aries.cdi.extra.propertytypes.JaxrsResource;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.github.rotty3000.osgi.microprofile.model.JSONBModel;
-import org.github.rotty3000.osgi.microprofile.model.JohnzonModel;
+import org.github.rotty3000.osgi.config.Config;
+import org.github.rotty3000.osgi.model.JSONBModel;
+import org.github.rotty3000.osgi.model.JohnzonModel;
+import org.osgi.service.cdi.annotations.ComponentProperties;
 import org.osgi.service.cdi.annotations.Service;
 import org.osgi.service.log.Logger;
 
@@ -42,29 +44,28 @@ import org.osgi.service.log.Logger;
 @Service
 public class JSONEndpoint {
 
-	private final Logger logger;
-	private String stringProperty;
-
 	@Inject
-	public JSONEndpoint(
-		Logger logger,
-		@ConfigProperty(name="my.string.property")
-		String stringProperty) {
+	private Logger logger;
 
-		this.logger = logger;
-		this.stringProperty = stringProperty;
+	@ComponentProperties
+	@Inject
+	private Config config;
 
-		logger.info(l -> l.info("my.string.property = {}", stringProperty));
+	@PostConstruct
+	void postConstruct() {
+		logger.debug("my.string.property = {}", config.my_string_property());
 	}
 
 	@GET
 	@Path("/jsonb")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String jsonb(@Context UriInfo uriInfo) {
-		logger.debug(l -> l.debug("being called at {}", uriInfo.getAbsolutePath()));
+		logger.debug("being called at {}", uriInfo.getAbsolutePath());
 
 		JSONBModel m = new JSONBModel();
-		m.value = stringProperty;
+		m.date = LocalDate.now();
+		m.value = config.my_string_property();
+
 		return JsonbBuilder.create().toJson(m);
 	}
 
@@ -72,30 +73,39 @@ public class JSONEndpoint {
 	@Path("/jsonb_m")
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONBModel jsonbModel(@Context UriInfo uriInfo) {
-		logger.debug(l -> l.debug("being called at {}", uriInfo.getAbsolutePath()));
+		logger.debug("being called at {}", uriInfo.getAbsolutePath());
 
 		JSONBModel m = new JSONBModel();
-		m.value = stringProperty;
+		m.date = LocalDate.now();
+		m.value = config.my_string_property();
+
 		return m;
 	}
 
 	@GET
 	@Path("/jsonp")
 	@Produces(MediaType.APPLICATION_JSON)
-	public JsonArray jsonp(@Context UriInfo uriInfo) {
-		logger.debug(l -> l.debug("being called at {}", uriInfo.getAbsolutePath()));
+	public JsonObject jsonp(@Context UriInfo uriInfo) {
+		logger.debug("being called at {}", uriInfo.getAbsolutePath());
 
-		return Json.createArrayBuilder().add(stringProperty).build();
+		JohnzonModel model = new JohnzonModel();
+		model.date = LocalDate.now();
+		model.value = config.my_string_property();
+
+		return Json.createObjectBuilder().add("my.string.property", model.value).build();
 	}
 
 	@GET
 	@Path("/jsonp_m")
 	@Produces(MediaType.APPLICATION_JSON)
 	public JohnzonModel jsonpModel(@Context UriInfo uriInfo) {
-		logger.debug(l -> l.debug("being called at {}", uriInfo.getAbsolutePath()));
-		JohnzonModel m = new JohnzonModel(LocalDate.now());
-		m.value = stringProperty;
-		return m;
+		logger.debug("being called at {}", uriInfo.getAbsolutePath());
+
+		JohnzonModel model = new JohnzonModel();
+		model.date = LocalDate.now();
+		model.value = config.my_string_property();
+
+		return model;
 	}
 
 }

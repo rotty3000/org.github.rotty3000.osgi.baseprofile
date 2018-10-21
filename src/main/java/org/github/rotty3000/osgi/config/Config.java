@@ -12,16 +12,10 @@
  * limitations under the License.
  */
 
-@Beans
-@Requirement( // could be on the MPConfig annotations, e.g. @ConfigProperty
-	namespace = CDI_EXTENSION_PROPERTY, name ="microprofile-config"
-)
-@Requirement(
-	namespace = CDI_EXTENSION_PROPERTY, name = "JavaJSONB"
-)
-package org.github.rotty3000.osgi.microprofile;
+package org.github.rotty3000.osgi.config;
 
-import static org.osgi.service.cdi.CDIConstants.*;
+public @interface Config {
 
-import org.osgi.annotation.bundle.Requirement;
-import org.osgi.service.cdi.annotations.Beans;
+	public String my_string_property() default "NOT SET!";
+
+}
