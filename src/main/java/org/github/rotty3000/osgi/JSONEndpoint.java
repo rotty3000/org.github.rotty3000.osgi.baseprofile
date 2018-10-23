@@ -31,10 +31,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.aries.cdi.extra.propertytypes.JSONRequired;
 import org.apache.aries.cdi.extra.propertytypes.JaxrsResource;
-import org.github.rotty3000.osgi.config.Config;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.github.rotty3000.osgi.model.JSONBModel;
 import org.github.rotty3000.osgi.model.JohnzonModel;
-import org.osgi.service.cdi.annotations.ComponentProperties;
 import org.osgi.service.cdi.annotations.Service;
 import org.osgi.service.log.Logger;
 
@@ -47,13 +46,13 @@ public class JSONEndpoint {
 	@Inject
 	private Logger logger;
 
-	@ComponentProperties
+	@ConfigProperty(name = "my.string.property", defaultValue = "NOT SET!")
 	@Inject
-	private Config config;
+	private String my_string_property;
 
 	@PostConstruct
 	void postConstruct() {
-		logger.debug("my.string.property = {}", config.my_string_property());
+		logger.debug("my.string.property = {}", my_string_property);
 	}
 
 	@GET
@@ -64,7 +63,7 @@ public class JSONEndpoint {
 
 		JSONBModel m = new JSONBModel();
 		m.date = LocalDate.now();
-		m.value = config.my_string_property();
+		m.value = my_string_property;
 
 		return JsonbBuilder.create().toJson(m);
 	}
@@ -77,7 +76,7 @@ public class JSONEndpoint {
 
 		JSONBModel m = new JSONBModel();
 		m.date = LocalDate.now();
-		m.value = config.my_string_property();
+		m.value = my_string_property;
 
 		return m;
 	}
@@ -90,7 +89,7 @@ public class JSONEndpoint {
 
 		JohnzonModel model = new JohnzonModel();
 		model.date = LocalDate.now();
-		model.value = config.my_string_property();
+		model.value = my_string_property;
 
 		return Json.createObjectBuilder().add("my.string.property", model.value).build();
 	}
@@ -103,7 +102,7 @@ public class JSONEndpoint {
 
 		JohnzonModel model = new JohnzonModel();
 		model.date = LocalDate.now();
-		model.value = config.my_string_property();
+		model.value = my_string_property;
 
 		return model;
 	}
